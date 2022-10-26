@@ -1,7 +1,7 @@
 {
-  "name": "{{npm-package-name}}",
+  "name": "endly",
   "version": "0.0.1",
-  "description": "{{package-slogan}}",
+  "description": "Express.js Endpoint Builder with Auth integration",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -43,7 +43,7 @@
 
     "check": "npm rum lint-errors-only && npm run build-ts && npm run tests && echo Done!"
   },
-  "repository": "https://github.com/{{github-user-name}}/{{package-name}}",
+  "repository": "https://github.com/joebloggs/endly",
   "author": "",
   "license": "MIT",
   "publishConfig": {
