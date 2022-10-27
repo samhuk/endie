@@ -94,6 +94,7 @@ type UserRecord = { name: string}
 
 const endpoint = endie.createEndpoint<{ user: UserRecord }, {}, { user: UserRecord }>({
   permission: p => p.recipe.article.update,
+  sendReturned: true,
   handler: o => {
     const a = 1 // some mock operation
     return o.req.body
