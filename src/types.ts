@@ -5,4 +5,4 @@
  * E.g. `import { EndieOptions } from 'endie`
  */
 
-export type { Endie, EndieOptions } from './endie/types'
+export type { Endie } from './endie/types'

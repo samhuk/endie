@@ -8,10 +8,12 @@
     <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="license" />
   </a>
   <a href="https://badge.fury.io/js/endie.svg" target="_blank">
-    <img src="https://badge.fury.io/js/{{npm-package-name}}.svg" alt="npm version" />
+    <img src="https://badge.fury.io/js/endie.svg" alt="npm version" />
   </a>
 </p>
 
 ## Overview
 
 Placeholder for endie.
+
+WIP Package for teaching express.js new tricks with plugins.
