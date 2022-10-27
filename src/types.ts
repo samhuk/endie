@@ -2,7 +2,7 @@
  * This file defines all of the types that will be available in the public API
  * of the package.
  *
- * E.g. `import { PackageNameOptions } from 'npm-package-name`
+ * E.g. `import { EndlyOptions } from 'endly`
  */
 
-export type { PackageName, PackageNameOptions } from './package-name/types'
+export type { Endly, EndlyOptions } from './endly/types'

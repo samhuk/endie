@@ -4,9 +4,6 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/joebloggs/{{package-name}}/actions/workflows/ci.yaml/badge.svg" target="_blank">
-    <img src="https://github.com/{{github-user-name}}/{{package-name}}/actions/workflows/ci.yaml/badge.svg" alt="ci status" />
-  </a>
   <a href="https://img.shields.io/badge/License-MIT-green.svg" target="_blank">
     <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="license" />
   </a>
