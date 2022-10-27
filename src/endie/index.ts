@@ -1,9 +1,12 @@
 import { createPermissions } from './permissions'
-import { Permission, Permissions, PermissionsNode } from './permissions/types'
+import { Permission, PermissionsNode } from './permissions/types'
 import { Endie } from './types'
 
 export const createEndie = (): Endie => null as any
 
+// ----------------------------
+// --     Example Usage      --
+// ----------------------------
 const PERMISSIONS = createPermissions({
   user: {
     get: {},
