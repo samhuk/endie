@@ -58,3 +58,5 @@ export type PermissionInfo<TPermissionsOptions extends PermissionsOptions = Perm
   permissionDict: PermissionDict
   permissionPaths: ExtractAllPaths<RootPermissions<TPermissionsOptions>>
 }
+
+export type PermissionSelector<TPermissions extends Permissions> = (p: TPermissions) => Permissions
