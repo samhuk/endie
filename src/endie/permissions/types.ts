@@ -27,7 +27,7 @@ export type Permission<
   path: `${TParentPath}/${TName}`
 }
 
-export type Permissions<
+export type PermissionsNode<
   TPermissionsOptions extends PermissionsOptions = PermissionsOptions,
   TName extends string = string,
   TParentPath extends string = string,
@@ -37,9 +37,16 @@ export type Permissions<
     TParentPath,
     TPermissionsOptions extends { $description: string } ? TPermissionsOptions['$description'] : string
   >
-} & { [TChildPermissionOptionsName in Exclude<StringKeysOf<TPermissionsOptions>, '$description'>]:
-  Permissions<TPermissionsOptions[TChildPermissionOptionsName], TChildPermissionOptionsName, `${TParentPath}/${TName}`>
 }
+
+export type Permissions<
+  TPermissionsOptions extends PermissionsOptions = PermissionsOptions,
+  TName extends string = string,
+  TParentPath extends string = string,
+> = PermissionsNode<TPermissionsOptions, TName, TParentPath>
+  & { [TChildPermissionOptionsName in Exclude<StringKeysOf<TPermissionsOptions>, '$description'>]:
+    Permissions<TPermissionsOptions[TChildPermissionOptionsName], TChildPermissionOptionsName, `${TParentPath}/${TName}`>
+  }
 
 export type RootPermissions<
   TPermissionsOptions extends PermissionsOptions = PermissionsOptions,

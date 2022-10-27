@@ -17,7 +17,7 @@ type _AggregateReturnedData<
     Next[I]
   >
 
-type AggregateReturnedData<
+export type AggregateReturnedData<
   TPluginList extends PreRequestPluginList | PostRequestPluginList
 > = _AggregateReturnedData<TPluginList>
 
@@ -29,11 +29,11 @@ type _AggregateInitPluginListEndpointProps<
   ? V
   : _AggregateInitPluginListEndpointProps<
     TPluginList,
-    V & TPluginList[I]['endpointProps'],
+    V & TPluginList[I]['props'],
     Next[I]
   >
 
-type AggregateInitPluginListEndpointProps<
+export type AggregateInitPluginListEndpointProps<
   TPluginList extends InitPluginList
 > = _AggregateInitPluginListEndpointProps<TPluginList>
 

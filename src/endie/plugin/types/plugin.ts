@@ -11,7 +11,7 @@ type PluginBase = {
 }
 
 export type InitPlugin = PluginBase & {
-  endpointProps?: { [TPropName in string]: any },
+  props?: { [TPropName in string]: any },
   val?: any
 }
 
@@ -20,7 +20,7 @@ type PreRequestPluginExecFunctionOptions<
   TEndpointProps extends any = any,
 > = {
   m: TMetaData
-  endpointProps: TEndpointProps
+  props: TEndpointProps
   req: Request
   res: Response
 }
@@ -52,7 +52,7 @@ type PostRequestPluginExecFunctionOptions<
   TEndpointProps extends any = any,
 > = {
   m: TMetaData
-  endpointProps: TEndpointProps
+  props: TEndpointProps
   req: Request
   res: Response
   returnedData?: any
@@ -71,7 +71,7 @@ export type PostRequestPlugin<
   TEndpointProps extends any = any,
 > = PluginBase & {
   skip?: SkipFunction<TMetaData, TEndpointProps>
-  exec: PostRequestPluginExecFunction
+  exec: PostRequestPluginExecFunction<TMetaData, TEndpointProps>
 }
 
 export type InitPluginList = Readonly<InitPlugin[]>
