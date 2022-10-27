@@ -1,8 +1,8 @@
-import { createEndly } from '.'
+import { createEndie } from '.'
 
-describe('endly', () => {
-  describe('createEndly', () => {
-    const fn = createEndly
+describe('endie', () => {
+  describe('createEndie', () => {
+    const fn = createEndie
 
     test('basic test', () => {
       expect(fn(null)).toBeDefined()

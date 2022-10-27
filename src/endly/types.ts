@@ -1,10 +1,10 @@
 import { PermissionsOptions } from './permissions/types'
 
-export type EndlyOptions = {
+export type EndieOptions = {
   permissions: PermissionsOptions
 }
 
-export type Endly<TOptions extends EndlyOptions> = {
+export type Endie<TOptions extends EndieOptions> = {
   /**
    * Create an endpoint.
    */

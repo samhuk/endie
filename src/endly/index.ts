@@ -1,7 +1,7 @@
-import { EndlyOptions, Endly } from './types'
+import { EndieOptions, Endie } from './types'
 
-export const createEndly = <
-  TOptions extends EndlyOptions
->(options: TOptions): Endly<TOptions> => ({
+export const createEndie = <
+  TOptions extends EndieOptions
+>(options: TOptions): Endie<TOptions> => ({
     sum: options.permissions,
   } as any)
