@@ -1,7 +1,7 @@
 {
   "name": "endie",
   "version": "0.0.1",
-  "description": "Express.js Endpoint Builder with Auth integration",
+  "description": "Express.js Endpoint Builder",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
