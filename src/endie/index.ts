@@ -2,7 +2,7 @@ import { createPermissions } from './permissions'
 import { Permission, PermissionsNode } from './permissions/types'
 import { Endie } from './types'
 
-export const createEndie = (): Endie => null as any
+export const createEndie = (): Endie<[], [], [], false> => null as any
 
 // ----------------------------
 // --     Example Usage      --
@@ -31,8 +31,6 @@ type MockAuthService = {
     permission: Permission
   ) => Promise<{ success: boolean }>
 }
-
-type PermissionInitPluginProps = { permission?: (p: AppPermissions) => PermissionsNode }
 
 const authService: MockAuthService = null as any
 
@@ -86,6 +84,7 @@ const endie = createEndie()
         o.res.send(o.returnedData)
     },
   })
+  .lock()
 
 // ----------------------------
 // --  Endpoints  --
