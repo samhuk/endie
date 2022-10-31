@@ -1,8 +1,10 @@
+import { Request } from 'express'
 import { createPermissions } from './permissions'
 import { Permission, PermissionsNode } from './permissions/types'
+import { createPlugin } from './plugin'
 import { Endie } from './types'
 
-export const createEndie = (): Endie<[], [], [], false> => null as any
+export const createEndie = (): Endie<[], false> => null as any
 
 // ----------------------------
 // --     Example Usage      --
@@ -22,11 +24,9 @@ const PERMISSIONS = createPermissions({
   admin: {},
 })
 
-type AppPermissions = typeof PERMISSIONS
-
 type MockAuthService = {
-  identify: () => Promise<{ user: { name: string }, mode?: 'user-session' | 'access-token' }>
-  isAllowed: (
+  authenticate: (req: Request) => Promise<{ user: { name: string }, mode?: 'user-session' | 'access-token' }>
+  authorize: (
     identity: { user: { name: string }, mode?: 'user-session' | 'access-token' },
     permission: Permission
   ) => Promise<{ success: boolean }>
@@ -34,54 +34,63 @@ type MockAuthService = {
 
 const authService: MockAuthService = null as any
 
-const endie = createEndie()
-  // ----------------------------
-  // -- Initialization Plugins --
-  // ----------------------------
-  // Make endpoints state some additional options and their permissions
-  .addInitPlugin({
-    name: 'misc. options',
-    props: null as {
-      sendReturned?: boolean
-      useDefaultErrorHandler?: boolean
-      permission?: (p: AppPermissions) => PermissionsNode
-    },
+const authPlugin = createPlugin('auth')
+  .setProps(null as {
+    permission: (p: typeof PERMISSIONS) => PermissionsNode,
   })
-  // ----------------------------
-  // --  Pre-Request Plugins   --
-  // ----------------------------
-  // Determine which permission is being accessed
-  .addPreRequestPlugin({
-    name: 'permission',
-    skip: o => o.props.permission == null,
-    exec: o => ({ permission: o.props.permission?.(PERMISSIONS)?.$this }),
-  })
-  // Determine what identity is being used
-  .addPreRequestPlugin({
-    name: 'authentication',
-    exec: async () => {
-      const result = await authService.identify()
-      return { identify: result }
-    },
-  })
-  // Determine if identity can access permission
-  .addPreRequestPlugin({
-    name: 'authorization',
+  .setPre({
     exec: async o => {
-      const result = await authService.isAllowed(o.m.identify, o.m.permission)
-      return { authorization: result }
+      // Determine which permission is being accessed
+      const permission = o.props.permission?.(PERMISSIONS)?.$this
+      // Determine what identity is being used
+      const authenticationResult = await authService.authenticate(o.req)
+      // Determine if identity can access permission
+      const authorizationResult = await authService.authorize(authenticationResult, permission)
+      return {
+        permission,
+        authenticationResult,
+        authorizationResult,
+      }
     },
   })
-  // ----------------------------
-  // --  Post-Request Plugins  --
-  // ----------------------------
-  .addPostRequestPlugin({
-    name: 'send returned data + error handling',
-    exec: async o => {
+  .setPost({
+    exec: o => ({
+      testing: 123,
+    }),
+  })
+  .build()
+
+const resultHandlingPlugin = createPlugin('resultHandling')
+  .setProps(null as {
+    sendReturned?: boolean
+  })
+  .setPost({
+    exec: o => {
       if (o.error != null)
         o.res.send(o.error)
       else if (o.props.sendReturned ?? true)
         o.res.send(o.returnedData)
+    },
+  })
+  .build()
+
+const endie = createEndie()
+  // ----------------------------
+  // -- Initialization Plugins --
+  // ----------------------------
+  // Make endpoints state some options like their permission, etc.
+  .addPlugin({
+    props: null as {
+      useDefaultErrorHandler?: boolean
+    },
+  })
+  .addPlugin(authPlugin)
+  .addPlugin(resultHandlingPlugin)
+  .addPlugin({
+    pre: {
+      exec: o => {
+        // Bespoke logic could go here
+      },
     },
   })
   .lock()
@@ -92,9 +101,8 @@ const endie = createEndie()
 
 type UserRecord = { name: string}
 
-const endpoint = endie.createEndpoint<{ user: UserRecord }, {}, { user: UserRecord }>({
+const endpoint = endie.create<{ user: UserRecord }, {}, { user: UserRecord }>({
   permission: p => p.recipe.article.update,
-  sendReturned: true,
   handler: o => {
     const a = 1 // some mock operation
     return o.req.body

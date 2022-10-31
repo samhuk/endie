@@ -5,7 +5,7 @@ describe('endie', () => {
     const fn = createEndie
 
     test('basic test', () => {
-      expect(fn(null)).toBeDefined()
+      expect(fn()).toBeDefined()
     })
   })
 })

@@ -30,8 +30,8 @@ export type HandlerFunction<
 ) => Promise<TResponseBody> | TResponseBody
 
 export type CreateEndpointFunction<
+  TProps extends any = any,
   TMetaData extends any = any,
-  TEndpointProps extends any = any,
 > = <
   TRequestBody extends any = any,
   TRequestQuery extends { [k: string]: any } = { [k: string]: any },
@@ -39,7 +39,7 @@ export type CreateEndpointFunction<
 >(
   options: {
     handler: HandlerFunction<TRequestBody, TRequestQuery, TResponseBody, TMetaData>
-  } & TEndpointProps
+  } & TProps
 ) => CreateEndpointResult<
   TRequestBody,
   TRequestQuery,
