@@ -1,3 +1,4 @@
+import { IsTrueAndFalse } from '@samhuk/type-helpers/dist/type-helpers/types'
 import { Request, Response } from 'express'
 
 export type PreRequestPluginExecFunction<
@@ -38,7 +39,7 @@ export type PostRequestPluginExecFunction<
   }
 ) => Promise<any> | any
 
-type PluginPre<
+export type PluginPre<
   TProps extends any = any,
   TPreMetaData extends any = any,
 > = {
@@ -53,7 +54,7 @@ type PluginPre<
   exec: PreRequestPluginExecFunction<TPreMetaData, TProps>
 }
 
-type PluginPost<
+export type PluginPost<
   TProps extends any = any,
   TPostMetaData extends any = any,
 > = {
@@ -68,8 +69,13 @@ type PluginPost<
   exec: PostRequestPluginExecFunction<TPostMetaData, TProps>
 }
 
-type IncludeIfTrue<TBool extends boolean, ObjToInclude> = TBool extends true ? ObjToInclude : {}
-type IncludeIfFalse<TBool extends boolean, ObjToInclude> = TBool extends false ? ObjToInclude : {}
+type IncludeIfTrue<TBool extends boolean, ObjToInclude> = IsTrueAndFalse<TBool> extends true
+  ? ObjToInclude
+  : (TBool extends true ? ObjToInclude : {})
+
+type IncludeIfFalse<TBool extends boolean, ObjToInclude> = IsTrueAndFalse<TBool> extends true
+  ? ObjToInclude
+  : (TBool extends false ? ObjToInclude : {})
 
 export type Plugin<
   TPreceedingProps extends any = any,
@@ -99,7 +105,7 @@ export type PluginCreator<
   TPreceedingPreMetaData extends any = any,
   TPreceedingPostMetaData extends any = any,
 
-  TProps extends any = undefined,
+  TProps extends any = {},
   TPluginPre extends PluginPre = undefined,
   TPluginPost extends PluginPost = undefined,
 
@@ -144,7 +150,7 @@ export type PluginCreator<
     /**
      * Defines logic before the endpoint handler is called.
      */
-    setPre: <TNewPluginPre extends PluginPre<TPreceedingPreMetaData, TPreceedingProps & TProps>>(
+    setPre: <TNewPluginPre extends PluginPre<TPreceedingProps & TProps, TPreceedingPreMetaData>>(
       pre: TNewPluginPre
     ) => PluginCreator<
       TPreceedingProps,
@@ -171,7 +177,7 @@ export type PluginCreator<
     /**
      * Defines logic after the endpoint handler is called.
      */
-    setPost: <TNewPluginPost extends PluginPost<TPreceedingPostMetaData, TPreceedingProps & TProps>>(
+    setPost: <TNewPluginPost extends PluginPost<TPreceedingProps & TProps, TPreceedingPostMetaData>>(
       post: TNewPluginPost
     ) => PluginCreator<
       TPreceedingProps,
@@ -198,9 +204,41 @@ export type PluginCreator<
       TPreceedingPostMetaData,
 
       TProps,
-      TPluginPre,
-      TPluginPost
+      StandardizePluginPre<TPluginPre>,
+      StandardizePluginPost<TPluginPost>
     >
   }
+
+type StandardizePluginPre<
+  TPluginPre extends PluginPre
+> = TPluginPre extends undefined
+  ? undefined
+  : (
+    (
+      TPluginPre extends { skip: SkipFunction }
+        ? {
+          skip: (...args: any[]) => ReturnType<TPluginPre['skip']>
+        }
+        : {}
+    ) & {
+      exec: (...args: any[]) => ReturnType<TPluginPre['exec']>
+    }
+  )
+
+type StandardizePluginPost<
+  TPluginPost extends PluginPost
+> = TPluginPost extends undefined
+  ? undefined
+  : (
+    (
+      TPluginPost extends { skip: SkipFunction }
+        ? {
+          skip: (...args: any[]) => ReturnType<TPluginPost['skip']>
+        }
+        : {}
+    ) & {
+      exec: (...args: any[]) => ReturnType<TPluginPost['exec']>
+    }
+  )
 
 export type PluginList = Readonly<Plugin[]>

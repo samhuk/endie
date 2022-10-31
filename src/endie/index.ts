@@ -34,7 +34,7 @@ type MockAuthService = {
 
 const authService: MockAuthService = null as any
 
-const authPlugin = createPlugin('auth')
+const authPlugin = createPlugin()
   .setProps(null as {
     permission: (p: typeof PERMISSIONS) => PermissionsNode,
   })
@@ -53,14 +53,9 @@ const authPlugin = createPlugin('auth')
       }
     },
   })
-  .setPost({
-    exec: o => ({
-      testing: 123,
-    }),
-  })
   .build()
 
-const resultHandlingPlugin = createPlugin('resultHandling')
+const resultHandlingPlugin = createPlugin()
   .setProps(null as {
     sendReturned?: boolean
   })
@@ -75,10 +70,6 @@ const resultHandlingPlugin = createPlugin('resultHandling')
   .build()
 
 const endie = createEndie()
-  // ----------------------------
-  // -- Initialization Plugins --
-  // ----------------------------
-  // Make endpoints state some options like their permission, etc.
   .addPlugin({
     props: null as {
       useDefaultErrorHandler?: boolean
@@ -95,13 +86,9 @@ const endie = createEndie()
   })
   .lock()
 
-// ----------------------------
-// --  Endpoints  --
-// ----------------------------
+type RecipeRecord = { title: string }
 
-type UserRecord = { name: string}
-
-const endpoint = endie.create<{ user: UserRecord }, {}, { user: UserRecord }>({
+const endpoint = endie.create<{ recipe: RecipeRecord }, {}, { recipe: RecipeRecord }>({
   permission: p => p.recipe.article.update,
   handler: o => {
     const a = 1 // some mock operation
