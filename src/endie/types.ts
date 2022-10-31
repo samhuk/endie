@@ -18,7 +18,7 @@ export type Endie<
         TPlugin extends Plugin<
           AggregatePluginListInitProps<TPluginList>,
           AggregatePluginPreExecResults<TPluginList>,
-          AggregatePluginPostExecResults<TPluginList>
+          AggregatePluginPreExecResults<TPluginList> & AggregatePluginPostExecResults<TPluginList>
         >
       >(creator: TPlugin) => Endie<[...TPluginList, TPlugin], false>
       /**
@@ -33,7 +33,7 @@ export type Endie<
        */
       create: CreateEndpointFunction<
         AggregatePluginListInitProps<TPluginList>,
-        AggregatePluginPreExecResults<TPluginList> & AggregatePluginPostExecResults<TPluginList>
+        AggregatePluginPreExecResults<TPluginList>
       >
     }
 )

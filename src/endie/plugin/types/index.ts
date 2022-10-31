@@ -241,4 +241,4 @@ type StandardizePluginPost<
     }
   )
 
-export type PluginList = Readonly<Plugin[]>
+export type PluginList = Plugin[]

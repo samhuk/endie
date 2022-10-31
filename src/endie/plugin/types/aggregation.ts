@@ -19,9 +19,7 @@ export type AggregatePluginListInitProps<
 
 type ReturnedDataOfExecFunction<
   TVal extends any = any,
-> = TVal extends void
-  ? {}
-  : TVal
+> = TVal extends void ? {} : TVal
 
 type ReturnTypeOfPreExecFunction<
   TPlugin extends Plugin = Plugin,
