@@ -6,4 +6,5 @@
  */
 
 export { createEndie } from './endie'
+export { createPlugin } from './endie/plugin'
 export * from './types'
