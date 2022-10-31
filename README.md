@@ -20,9 +20,9 @@
 
 ## Overview
 
-Express middleware has no robust support for Typescript. Express middleware relies on either built-in ever-present properties like [`req.cookies`](http://expressjs.com/en/api.html#req.cookies) (i.e. [cookie-parser](https://github.com/expressjs/cookie-parser)), or rely on modifying the global type declarations of Express.js (i.e. [express-fileupload](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/express-fileupload)).
+Express middleware has no robust support for Typescript. Express middleware relies on either built-in ever-present properties like [`req.cookies`](http://expressjs.com/en/api.html#req.cookies) (i.e. [cookie-parser](https://github.com/expressjs/cookie-parser)), or on modifying the global type declarations of Express.js (i.e. [express-fileupload](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/express-fileupload)).
 
-endie aims to provide Express middleware behavior via a plugin system that is fully type-enforced, leaving nothing to guess-work.
+endie provides Express middleware behavior via a plugin system that is fully type-enforced, leaving nothing to guess-work, without any of these type workarounds.
 
 ## Usage Overview
 

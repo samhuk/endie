@@ -33,7 +33,7 @@
     "clean": "npm run clean-unit-tests && npm run clean-integration-tests && npm run clean-ts && npm run clean-ts-dist",
     "check": "npm rum lint-errors-only && npm run build-ts && npm run tests && echo Done!"
   },
-  "repository": "https://github.com/joebloggs/endie",
+  "repository": "https://github.com/samhuk/endie",
   "author": "",
   "license": "MIT",
   "publishConfig": {
