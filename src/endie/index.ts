@@ -18,7 +18,8 @@ const createCreateEndpointFunction = (
         res,
       }) ?? false
       if (!skip) {
-        const execResult = pluginList[i].pre?.exec({
+        // eslint-disable-next-line no-await-in-loop
+        const execResult = await pluginList[i].pre?.exec({
           m: metaData,
           props: options,
           req,
@@ -51,7 +52,8 @@ const createCreateEndpointFunction = (
         res,
       }) ?? false
       if (!skip) {
-        const execResult = pluginList[i].post?.exec({
+        // eslint-disable-next-line no-await-in-loop
+        const execResult = await pluginList[i].post?.exec({
           m: metaData,
           props: options,
           req,
