@@ -1,9 +1,10 @@
 import { CreateEndpointFunction } from './endpoint/types'
+import { Plugin, PluginList } from './plugin/types'
 import {
-  Plugin,
-  PluginList,
-} from './plugin/types'
-import { AggregatePluginPreExecResults, AggregatePluginPostExecResults, AggregatePluginListInitProps } from './plugin/types/aggregation'
+  AggregatePluginListInitProps,
+  AggregatePluginPostExecResults,
+  AggregatePluginPreExecResults,
+} from './plugin/types/aggregation'
 
 export type Endie<
   TPluginList extends PluginList = PluginList,
