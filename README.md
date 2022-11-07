@@ -30,6 +30,7 @@ This section shows a simple example of the usage of endie.
 
 ```typescript
 import { createEndie, createPlugin } from 'endie'
+import express from 'express'
 
 // Plugin to parse the cookies of a request
 const cookiePlugin = createPlugin()
@@ -56,13 +57,18 @@ const endie = createEndie()
   .addPlugin(cookiePlugin)
   .addPlugin(identityPlugin)
   .addPlugin(errorLoggingPlugin)
+  .addPlugin(p => p.setPost({
+    exec: ({ ... }) => ...,
+  }))
 
-const endpoint = endie.create({
+const fooEndpoint = endie.create({
   logRequest: true,
   handler: async o => {
     console.log(o.m.cookies) // { cookies: ..., user: ...}
   }
 })
+
+const app = express().get('/foo', fooEndpoint)
 ```
 
 ## Contributing

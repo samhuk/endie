@@ -1,5 +1,5 @@
 import { CreateEndpointFunction } from './endpoint/types'
-import { Plugin, PluginList } from './plugin/types'
+import { Plugin, PluginCreator, PluginList } from './plugin/types'
 import {
   AggregatePluginListInitProps,
   AggregatePluginPostExecResults,
@@ -16,12 +16,17 @@ export type Endie<
        * Adds a plugin.
        */
       addPlugin: <
+        TPluginCreator extends PluginCreator<
+          AggregatePluginListInitProps<TPluginList>,
+          AggregatePluginPreExecResults<TPluginList>,
+          AggregatePluginPreExecResults<TPluginList> & AggregatePluginPostExecResults<TPluginList>
+        >,
         TPlugin extends Plugin<
           AggregatePluginListInitProps<TPluginList>,
           AggregatePluginPreExecResults<TPluginList>,
           AggregatePluginPreExecResults<TPluginList> & AggregatePluginPostExecResults<TPluginList>
-        >
-      >(creator: TPlugin) => Endie<[...TPluginList, TPlugin], false>
+        >,
+      >(plugin: TPlugin | ((creator: TPluginCreator) => TPlugin)) => Endie<[...TPluginList, TPlugin], false>
       /**
        * Locks-in the added plugins and prevents more plugins from being
        * inadvertently added later on, which would not be type-enforced.
